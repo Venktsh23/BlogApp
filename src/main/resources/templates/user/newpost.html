@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" data-th-href="@{/css/output.css}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" />
+
+</head>
+
+<body class="text-2xl bg-gray-100">
+
+    <div data-th-replace="user/navbar2 :: navbr"></div>
+
+    <div class="flex flex-col items-center">
+        <div data-th-insert="user/newpostform :: post-form" class="w-full max-w-4xl mb-8"></div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+</body>
+
+</html>

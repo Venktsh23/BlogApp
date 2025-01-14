@@ -1,0 +1,90 @@
+<!-- Comment Section Fragment -->
+<div data-th-fragment="comments" class="w-full max-w-4xl mx-auto py-8">
+    <!-- New Comment Form -->
+    <div class="mb-8 w-[85%] mx-auto">
+        <form th:action="@{'/user/addnew/'+ ${postid}}" method="POST" class="space-y-4">
+            <!-- th:action="@{'/comments/add/' + ${postId}}" -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Write a Comment</h3>
+                <textarea name="content" rows="4"
+                    class="w-full px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    placeholder="Share your thoughts..." required></textarea>
+                <button type="submit"
+                    class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-200">
+                    Post Comment
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Comments List -->
+    <div class="space-y-6 w-[85%] mx-auto">
+
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            Comments ([[${comments != null ? comments.size() : 0}]])
+        </h2>
+
+        <!-- No Comments Message -->
+        <div th:if="${comments == null || comments.empty}" class="text-center py-8 text-gray-500 dark:text-gray-400">
+            No comments yet. Be the first to share your thoughts!
+        </div>
+
+        <!-- Individual Comments -->
+        <div th:if="${comments != null}" th:each="comment : ${comments}"
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 space-y-4">
+            <!-- Comment Header -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <!-- User Avatar -->
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                        <span th:text="${#strings.substring(comment.user.username, 0, 1)}"
+                            class="text-blue-600 font-semibold text-lg">
+                        </span>
+                    </div>
+                    <!-- User Info -->
+                    <div>
+                        <h4 th:text="${comment.user.username}" class="font-semibold text-gray-900 dark:text-white">
+                        </h4>
+                        <p th:text="${#temporals.format(comment.createdAt, 'MMM dd, yyyy HH:mm')}"
+                            class="text-sm text-gray-500 dark:text-gray-400">
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Delete Button (Only visible to comment author) -->
+                <!-- <form th:if="${username == comment.user.username}"
+                      th:action="@{'/comments/delete/' + ${comment.id}}"
+                      method="POST"
+                      class="inline">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button type="submit" 
+                            class="text-red-500 hover:text-red-600 transition-colors duration-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                    </button>
+                </form> -->
+                <form th:if="${username == comment.user.username}"
+                    th:action="@{/comments/delete/{id}(id=${comment.id})}" method="POST" class="inline">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button type="submit" class="text-red-500 hover:text-red-600 transition-colors duration-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                            </path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Comment Content -->
+            <div class="pl-13">
+                <p th:text="${comment.content}" class="text-gray-700 dark:text-gray-300 whitespace-pre-line">
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
